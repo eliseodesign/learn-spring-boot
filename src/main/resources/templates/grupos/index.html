@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/_mainLayout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de grupos</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+    <div layout:fragment="content">
+        <div th:if="${msg != null}">
+            <script>
+                Swal.fire({
+                    title: 'Confirmación',
+                    text: '[[${msg}]]',
+                    icon: 'success',
+                });
+            </script>
+        </div>
+
+        <div th:if="${error != null}">
+            <script>
+                Swal.fire({
+                    title: 'Error',
+                    text: '[[${error}]]',
+                    icon: 'error',
+                });
+            </script>
+        </div>
+
+        <h1>Listado de grupos</h1>
+
+        <a th:href="@{/grupos/create}" class="btn btn-primary">Crear grupo</a>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="grupo : ${grupos}">
+                    <td th:text="${grupo.id}"></td>
+                    <td th:text="${grupo.nombre}"></td>
+                    <td th:text="${grupo.descripcion}"></td>
+                    <td>
+                        <a th:href="@{/grupos/details/{id}(id=${grupo.id})}" class="btn btn-info">Detalles</a>
+                        <a th:href="@{/grupos/edit/{id}(id=${grupo.id})}" class="btn btn-warning">Editar</a>
+                        <a th:href="@{/grupos/delete/{id}(id=${grupo.id})}" class="btn btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                    <a class="page-link" th:href="@{|/grupos?page=${pageNumber}|}" th:text="${pageNumber}"></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>
